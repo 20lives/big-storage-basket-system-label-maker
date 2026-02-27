@@ -46,11 +46,11 @@ export function IconPicker({ value, onChange, iconPosition, onPositionChange }: 
 
   return (
     <div ref={containerRef} className="relative">
-      <div className="flex items-center gap-1">
+      <div className="flex items-center gap-1.5">
         {/* Current icon preview */}
         {value && isValid && (
           <span
-            className="flex h-9 w-9 flex-shrink-0 items-center justify-center rounded border border-gray-300 text-lg"
+            className="flex h-9 w-9 shrink-0 items-center justify-center rounded-md border border-border-subtle bg-surface text-base text-zinc-300"
             style={{ fontFamily: '"Font Awesome 6 Free"', fontWeight: 900 }}
           >
             {results.find((r) => r.name === value)?.codepoint ?? ""}
@@ -65,7 +65,6 @@ export function IconPicker({ value, onChange, iconPosition, onPositionChange }: 
             const v = e.target.value;
             setQuery(v);
             setIsOpen(true);
-            // Auto-apply if it's a valid icon name
             if (isValidIcon(v)) {
               onChange(v);
             } else if (!v) {
@@ -73,10 +72,10 @@ export function IconPicker({ value, onChange, iconPosition, onPositionChange }: 
             }
           }}
           onFocus={() => setIsOpen(true)}
-          className={`w-full rounded border px-3 py-2 text-sm focus:ring-1 focus:outline-none ${
+          className={`w-full rounded-md border bg-surface px-3 py-2 text-sm text-zinc-200 placeholder:text-zinc-600 transition focus:ring-1 focus:outline-none ${
             value && !isValid
-              ? "border-red-300 focus:border-red-500 focus:ring-red-500"
-              : "border-gray-300 focus:border-blue-500 focus:ring-blue-500"
+              ? "border-red-500/40 focus:border-red-500/60 focus:ring-red-500/30"
+              : "border-border-subtle focus:border-blue-500/50 focus:ring-blue-500/30"
           }`}
         />
 
@@ -86,26 +85,36 @@ export function IconPicker({ value, onChange, iconPosition, onPositionChange }: 
             <button
               type="button"
               onClick={clearIcon}
-              className="flex h-9 w-9 flex-shrink-0 items-center justify-center rounded border border-gray-300 text-gray-400 hover:bg-gray-100 hover:text-gray-600"
+              className="flex h-9 w-9 shrink-0 items-center justify-center rounded-md border border-border-subtle bg-surface text-zinc-500 transition hover:border-border-hover hover:text-zinc-300"
               title="Clear icon"
             >
-              ×
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                <path strokeLinecap="round" d="M18 6L6 18M6 6l12 12" />
+              </svg>
             </button>
 
             {/* Position toggle */}
             {onPositionChange && (
-              <div className="inline-flex flex-shrink-0 rounded-md border border-gray-300 text-sm">
+              <div className="inline-flex shrink-0 rounded-md border border-border-subtle bg-surface p-0.5 text-xs">
                 <button
                   type="button"
                   onClick={() => onPositionChange("left")}
-                  className={`px-2 py-1.5 rounded-l-md ${iconPosition !== "right" ? "bg-blue-600 text-white" : "bg-white text-gray-600 hover:bg-gray-50"}`}
+                  className={`rounded px-2 py-1 font-medium transition ${
+                    iconPosition !== "right"
+                      ? "bg-blue-600 text-white"
+                      : "text-zinc-400 hover:text-zinc-200"
+                  }`}
                 >
                   Left
                 </button>
                 <button
                   type="button"
                   onClick={() => onPositionChange("right")}
-                  className={`px-2 py-1.5 rounded-r-md ${iconPosition === "right" ? "bg-blue-600 text-white" : "bg-white text-gray-600 hover:bg-gray-50"}`}
+                  className={`rounded px-2 py-1 font-medium transition ${
+                    iconPosition === "right"
+                      ? "bg-blue-600 text-white"
+                      : "text-zinc-400 hover:text-zinc-200"
+                  }`}
                 >
                   Right
                 </button>
@@ -116,22 +125,24 @@ export function IconPicker({ value, onChange, iconPosition, onPositionChange }: 
       </div>
 
       {value && !isValid && (
-        <p className="mt-1 text-xs text-red-500">
-          Icon "{value}" not found in Font Awesome
+        <p className="mt-1 text-xs text-red-400">
+          Icon &ldquo;{value}&rdquo; not found in Font Awesome
         </p>
       )}
 
       {/* Dropdown */}
       {isOpen && results.length > 0 && (
-        <div className="absolute z-50 mt-1 max-h-60 w-full overflow-y-auto rounded-lg border border-gray-200 bg-white shadow-lg">
+        <div className="absolute z-50 mt-1.5 max-h-60 w-full overflow-y-auto rounded-lg border border-border-subtle bg-panel-bg shadow-2xl shadow-black/40 studio-scroll">
           <div className="grid grid-cols-5 gap-1 p-2 sm:grid-cols-6 md:grid-cols-8">
             {results.map((icon) => (
               <button
                 key={icon.name}
                 type="button"
                 onClick={() => selectIcon(icon)}
-                className={`group flex flex-col items-center gap-0.5 rounded p-1.5 transition hover:bg-blue-50 ${
-                  icon.name === value ? "bg-blue-100" : ""
+                className={`group flex flex-col items-center gap-0.5 rounded-md p-1.5 transition ${
+                  icon.name === value
+                    ? "bg-blue-600/20 ring-1 ring-blue-500/40"
+                    : "hover:bg-surface-hover"
                 }`}
                 title={
                   icon.matchedAlias
@@ -140,7 +151,11 @@ export function IconPicker({ value, onChange, iconPosition, onPositionChange }: 
                 }
               >
                 <span
-                  className="text-lg text-gray-700 group-hover:text-blue-600"
+                  className={`text-lg transition ${
+                    icon.name === value
+                      ? "text-blue-400"
+                      : "text-zinc-400 group-hover:text-zinc-200"
+                  }`}
                   style={{
                     fontFamily: '"Font Awesome 6 Free"',
                     fontWeight: 900,
@@ -148,7 +163,13 @@ export function IconPicker({ value, onChange, iconPosition, onPositionChange }: 
                 >
                   {icon.codepoint}
                 </span>
-                <span className="w-full truncate text-center text-[9px] leading-tight text-gray-400 group-hover:text-blue-500">
+                <span
+                  className={`w-full truncate text-center text-[9px] leading-tight transition ${
+                    icon.name === value
+                      ? "text-blue-400"
+                      : "text-zinc-600 group-hover:text-zinc-400"
+                  }`}
+                >
                   {icon.name}
                 </span>
               </button>

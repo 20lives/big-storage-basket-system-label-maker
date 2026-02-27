@@ -51,111 +51,88 @@ export function DownloadPanel({
   };
 
   return (
-    <div className="flex flex-col gap-4">
-      <div>
-        <h3 className="text-xs font-semibold tracking-wide text-gray-400 uppercase">
-          Download
-        </h3>
-        <p className="mt-1 text-xs text-gray-400">
-          Two-color printing — choose how your slicer handles colors.
-        </p>
-      </div>
-
-      {/* Method selector */}
-      <div className="grid grid-cols-2 gap-2">
+    <div className="relative mx-auto w-full max-w-xl">
+      <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:gap-4">
+      {/* Method selector — segmented control */}
+        <div className="flex shrink-0 self-start rounded-lg border border-border-subtle bg-surface p-0.5">
         <button
           type="button"
           onClick={() => setMethod("combined")}
-          className={`rounded-lg border-2 px-3 py-2.5 text-left transition ${
+          className={`rounded-md px-3 py-1.5 text-xs font-medium transition ${
             method === "combined"
-              ? "border-blue-500 bg-blue-50"
-              : "border-gray-200 bg-white hover:border-gray-300"
+              ? "bg-blue-600 text-white shadow-sm"
+              : "text-zinc-400 hover:text-zinc-200"
           }`}
         >
-          <span className={`text-sm font-semibold ${method === "combined" ? "text-blue-700" : "text-gray-700"}`}>
-            Single file
-          </span>
-          <span className={`mt-0.5 block text-xs leading-snug ${method === "combined" ? "text-blue-500" : "text-gray-400"}`}>
-            Color change by layer
-          </span>
+          Single file
         </button>
         <button
           type="button"
           onClick={() => setMethod("separate")}
-          className={`rounded-lg border-2 px-3 py-2.5 text-left transition ${
+          className={`rounded-md px-3 py-1.5 text-xs font-medium transition ${
             method === "separate"
-              ? "border-blue-500 bg-blue-50"
-              : "border-gray-200 bg-white hover:border-gray-300"
+              ? "bg-blue-600 text-white shadow-sm"
+              : "text-zinc-400 hover:text-zinc-200"
           }`}
         >
-          <span className={`text-sm font-semibold ${method === "separate" ? "text-blue-700" : "text-gray-700"}`}>
-            Two files
-          </span>
-          <span className={`mt-0.5 block text-xs leading-snug ${method === "separate" ? "text-blue-500" : "text-gray-400"}`}>
-            One file per color
-          </span>
+          Two files
         </button>
       </div>
 
-      {/* Method explanation + download buttons */}
-      {method === "combined" ? (
-        <div className="flex flex-col gap-3">
-          <p className="text-xs leading-relaxed text-gray-500">
-            Downloads everything as one STL.
-            In your slicer, set a <strong className="text-gray-600">color change</strong> at
-            {" "}<strong className="text-gray-600">Z = {config.baseDepth}mm</strong> —
-            everything below is color 1 (background), above is color 2 (text).
-            With AMS/MMU, just assign colors per layer in your slicer.
-            Without it, add a pause at that layer and swap the filament by hand.
-          </p>
+      {/* Download button */}
+      <button
+        type="button"
+        disabled={isLoading || isEmpty}
+        onClick={() =>
+          method === "combined"
+            ? renderSTL(config, "combined")
+            : renderZip(config)
+        }
+        className="flex flex-1 items-center justify-center gap-2 rounded-lg bg-blue-600 px-5 py-2.5 text-sm font-medium text-white shadow-lg shadow-blue-600/20 transition hover:bg-blue-500 disabled:cursor-not-allowed disabled:opacity-40"
+      >
+        {isLoading ? <Spinner /> : <DownloadIcon />}
+        {isLoading
+          ? progress
+          : method === "combined"
+            ? "Download STL"
+            : "Download ZIP"}
+      </button>
 
-          <button
-            type="button"
-            disabled={isLoading || isEmpty}
-            onClick={() => renderSTL(config, "combined")}
-            className="flex items-center justify-center gap-2 rounded-lg bg-blue-600 px-4 py-2.5 text-sm font-medium text-white shadow-sm transition hover:bg-blue-700 disabled:cursor-not-allowed disabled:opacity-50"
-          >
-            {isLoading ? <Spinner /> : <DownloadIcon />}
-            {isLoading ? progress : "Download STL"}
-          </button>
-        </div>
-      ) : (
-        <div className="flex flex-col gap-3">
-          <p className="text-xs leading-relaxed text-gray-500">
-            Downloads the base plate and text layer as separate STLs.
-            Import both into your slicer and <strong className="text-gray-600">assign a different color to each</strong>.
-            Best for multi-material setups (Bambu AMS, Prusa MMU, IDEX).
-          </p>
-
-          <button
-            type="button"
-            disabled={isLoading || isEmpty}
-            onClick={() => renderZip(config)}
-            className="flex items-center justify-center gap-2 rounded-lg bg-blue-600 px-4 py-2.5 text-sm font-medium text-white shadow-sm transition hover:bg-blue-700 disabled:cursor-not-allowed disabled:opacity-50"
-          >
-            {isLoading ? <Spinner /> : <DownloadIcon />}
-            {isLoading ? progress : "Download ZIP"}
-          </button>
-        </div>
-      )}
-
-      {/* Error */}
-      {error && (
-        <div className="rounded-lg bg-red-50 px-3 py-2 text-sm text-red-700">
-          {error}
-        </div>
-      )}
-
-      {/* SCAD source */}
+      {/* SCAD source link */}
       <button
         type="button"
         disabled={isEmpty}
         onClick={handleScadDownload}
-        className="flex items-center justify-center gap-1.5 text-xs text-gray-400 transition hover:text-gray-600 disabled:cursor-not-allowed disabled:opacity-50"
+        className="flex shrink-0 items-center gap-1 rounded-md border border-border-subtle px-2 py-1.5 text-xs text-zinc-400 transition hover:border-border-hover hover:text-zinc-200 disabled:cursor-not-allowed disabled:opacity-40"
+        title="Download .scad source"
       >
-        <DownloadIcon size={14} />
-        Download .scad source
-      </button>
+        <DownloadIcon size={12} />
+        .scad
+        </button>
+      </div>
+
+      {/* Method explanation */}
+      <p className="mt-1 text-xs leading-relaxed text-zinc-500">
+        {method === "combined" ? (
+          <>
+            One STL — set a <strong className="text-zinc-400">color change</strong> at{" "}
+            <strong className="text-zinc-400">Z&nbsp;=&nbsp;{config.baseDepth}mm</strong> in your slicer.
+            Below is color&nbsp;1 (base), above is color&nbsp;2 (text).
+          </>
+        ) : (
+          <>
+            Two STLs — import both into your slicer and{" "}
+            <strong className="text-zinc-400">assign a different color to each</strong>.
+            Best for AMS, MMU, or IDEX setups.
+          </>
+        )}
+      </p>
+      {/* Error toast */}
+      {error && (
+        <div className="absolute bottom-full left-0 right-0 mb-2 rounded-lg border border-red-500/20 bg-red-950/80 px-3 py-2 text-xs text-red-300 backdrop-blur-sm">
+          {error}
+        </div>
+      )}
     </div>
   );
 }

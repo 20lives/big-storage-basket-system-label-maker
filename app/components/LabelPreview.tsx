@@ -54,19 +54,20 @@ export function LabelPreview({ config }: LabelPreviewProps) {
 
   // Vertical positioning when subtitle is present (mirrors label.ts h1Y/h2Y)
   const hasSubtitle = !!config.labelText2;
-  // In label.ts: h1Y = innerH * 0.18 (above center), h2Y = -innerH * 0.28 (below center)
-  // SVG Y-axis is inverted (positive = down), so we flip the signs
   const primaryY = hasSubtitle ? centerY - innerH * 0.18 : centerY;
   const subtitleY = centerY + innerH * 0.28;
+
+  // SVG padding for drop shadow
+  const pad = 4;
 
   return (
     <div className="w-full">
       <svg
-        viewBox={`0 0 ${width} ${height}`}
-        className="w-full rounded-lg border border-gray-200 bg-white"
+        viewBox={`${-pad} ${-pad} ${width + pad * 2} ${height + pad * 2}`}
+        className="w-full drop-shadow-[0_4px_20px_rgba(0,0,0,0.4)]"
         style={{ aspectRatio: `${width} / ${height}` }}
       >
-        {/* Base plate (color 1) */}
+        {/* Base plate (color 1) — dark surface */}
         <rect
           x={0}
           y={0}
@@ -74,7 +75,8 @@ export function LabelPreview({ config }: LabelPreviewProps) {
           height={height}
           rx={cornerRadius}
           ry={cornerRadius}
-          className="fill-gray-100 stroke-gray-300"
+          fill="#27272a"
+          stroke="#3f3f46"
           strokeWidth={0.3}
         />
 
@@ -88,7 +90,7 @@ export function LabelPreview({ config }: LabelPreviewProps) {
             rx={cornerRadius - borderWidth / 2}
             ry={cornerRadius - borderWidth / 2}
             fill="none"
-            className="stroke-gray-800"
+            stroke="#e4e4e7"
             strokeWidth={borderWidth}
           />
         )}
@@ -106,7 +108,7 @@ export function LabelPreview({ config }: LabelPreviewProps) {
                 fontWeight: 900,
                 fontSize: `${iconZoneW * 0.6}px`,
               }}
-              className="fill-gray-800"
+              fill="#e4e4e7"
             >
               {iconCodepoint}
             </text>
@@ -117,7 +119,7 @@ export function LabelPreview({ config }: LabelPreviewProps) {
               y1={centerY - innerH * 0.4}
               x2={sepX}
               y2={centerY + innerH * 0.4}
-              className="stroke-gray-800"
+              stroke="#e4e4e7"
               strokeWidth={sepW}
               strokeLinecap="round"
             />
@@ -135,9 +137,9 @@ export function LabelPreview({ config }: LabelPreviewProps) {
             fontFamily: cssFont,
             fontWeight: 700,
           }}
-          className="fill-gray-800"
+          fill="#f4f4f5"
         >
-          {config.labelText || "WINTER"}
+          {config.labelText || "LABEL"}
         </text>
 
         {/* Subtitle */}
@@ -152,7 +154,7 @@ export function LabelPreview({ config }: LabelPreviewProps) {
               fontFamily: cssFont,
               fontWeight: 700,
             }}
-            className="fill-gray-500"
+            fill="#a1a1aa"
           >
             {config.labelText2}
           </text>

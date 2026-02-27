@@ -26,7 +26,7 @@ function NumberInput({
 }) {
   return (
     <label className="flex items-center justify-between gap-2">
-      <span className="text-sm text-gray-600">{label}</span>
+      <span className="text-xs text-zinc-400">{label}</span>
       <input
         type="number"
         value={value}
@@ -34,7 +34,7 @@ function NumberInput({
         max={max}
         step={step}
         onChange={(e) => onChange(Number(e.target.value))}
-        className="w-20 rounded border border-gray-300 px-2 py-1 text-sm tabular-nums focus:border-blue-500 focus:ring-1 focus:ring-blue-500 focus:outline-none"
+        className="w-20 rounded-md border border-border-subtle bg-surface px-2.5 py-1.5 text-xs tabular-nums text-zinc-200 transition focus:border-blue-500/50 focus:ring-1 focus:ring-blue-500/30 focus:outline-none"
       />
     </label>
   );
@@ -58,12 +58,11 @@ function SliderInput({
   unit?: string;
 }) {
   return (
-    <label className="flex flex-col gap-1">
+    <label className="flex flex-col gap-1.5">
       <div className="flex items-center justify-between">
-        <span className="text-sm text-gray-600">{label}</span>
-        <span className="text-xs tabular-nums text-gray-400">
-          {value}
-          {unit}
+        <span className="text-xs text-zinc-400">{label}</span>
+        <span className="rounded bg-surface px-1.5 py-0.5 text-[10px] tabular-nums text-zinc-500">
+          {value}{unit}
         </span>
       </div>
       <input
@@ -73,7 +72,7 @@ function SliderInput({
         max={max}
         step={step}
         onChange={(e) => onChange(Number(e.target.value))}
-        className="w-full accent-blue-600"
+        className="w-full"
       />
     </label>
   );
@@ -81,19 +80,19 @@ function SliderInput({
 
 export function LabelForm({ config, onChange, onReset }: LabelFormProps) {
   return (
-    <div className="flex flex-col gap-5">
+    <div className="flex flex-col gap-6">
       {/* ── Content ─────────────────────────────────────── */}
       <fieldset className="flex flex-col gap-3">
-        <legend className="mb-1 text-xs font-semibold tracking-wide text-gray-400 uppercase">
+        <legend className="mb-1 text-[10px] font-semibold tracking-widest text-zinc-500 uppercase">
           Content
         </legend>
 
         <input
           type="text"
-          placeholder="Label text *"
+          placeholder="Label text"
           value={config.labelText}
           onChange={(e) => onChange({ labelText: e.target.value })}
-          className="rounded border border-gray-300 px-3 py-2 text-sm focus:border-blue-500 focus:ring-1 focus:ring-blue-500 focus:outline-none"
+          className="rounded-md border border-border-subtle bg-surface px-3 py-2 text-sm text-zinc-100 placeholder:text-zinc-600 transition focus:border-blue-500/50 focus:ring-1 focus:ring-blue-500/30 focus:outline-none"
         />
 
         <input
@@ -103,7 +102,7 @@ export function LabelForm({ config, onChange, onReset }: LabelFormProps) {
           onChange={(e) =>
             onChange({ labelText2: e.target.value || undefined })
           }
-          className="rounded border border-gray-300 px-3 py-2 text-sm focus:border-blue-500 focus:ring-1 focus:ring-blue-500 focus:outline-none"
+          className="rounded-md border border-border-subtle bg-surface px-3 py-2 text-sm text-zinc-100 placeholder:text-zinc-600 transition focus:border-blue-500/50 focus:ring-1 focus:ring-blue-500/30 focus:outline-none"
         />
 
         <IconPicker
@@ -116,16 +115,16 @@ export function LabelForm({ config, onChange, onReset }: LabelFormProps) {
 
       {/* ── Appearance ────────────────────────────────────────── */}
       <fieldset className="flex flex-col gap-3">
-        <legend className="mb-1 text-xs font-semibold tracking-wide text-gray-400 uppercase">
+        <legend className="mb-1 text-[10px] font-semibold tracking-widest text-zinc-500 uppercase">
           Appearance
         </legend>
 
-        <label className="flex flex-col gap-1">
-          <span className="text-sm text-gray-600">Font</span>
+        <label className="flex flex-col gap-1.5">
+          <span className="text-xs text-zinc-400">Font</span>
           <select
             value={config.fontFamily}
             onChange={(e) => onChange({ fontFamily: e.target.value as FontKey })}
-            className="rounded border border-gray-300 px-3 py-2 text-sm focus:border-blue-500 focus:ring-1 focus:ring-blue-500 focus:outline-none"
+            className="rounded-md border border-border-subtle bg-surface px-3 py-2 text-sm text-zinc-200 transition focus:border-blue-500/50 focus:ring-1 focus:ring-blue-500/30 focus:outline-none"
             style={{ fontFamily: FONTS[config.fontFamily].cssFamily, fontWeight: 700 }}
           >
             {FONT_KEYS.map((key) => (
@@ -156,7 +155,7 @@ export function LabelForm({ config, onChange, onReset }: LabelFormProps) {
 
       {/* ── Depth ─────────────────────────────────────────── */}
       <fieldset className="flex flex-col gap-3">
-        <legend className="mb-1 text-xs font-semibold tracking-wide text-gray-400 uppercase">
+        <legend className="mb-1 text-[10px] font-semibold tracking-widest text-zinc-500 uppercase">
           Depth
         </legend>
 
@@ -184,7 +183,7 @@ export function LabelForm({ config, onChange, onReset }: LabelFormProps) {
       <button
         type="button"
         onClick={onReset}
-        className="self-start rounded border border-gray-300 px-3 py-1.5 text-sm text-gray-600 hover:bg-gray-100"
+        className="self-start rounded-md border border-border-subtle px-3 py-1.5 text-xs text-zinc-400 transition hover:border-border-hover hover:bg-surface hover:text-zinc-200"
       >
         Reset to defaults
       </button>
