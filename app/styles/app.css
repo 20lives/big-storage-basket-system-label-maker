@@ -1,5 +1,99 @@
 @import "tailwindcss";
 
+/* ── Theme tokens ──────────────────────────────────────────────── */
+@theme {
+  --color-app-bg: #09090b;
+  --color-panel-bg: #0c0c0e;
+  --color-surface: #18181b;
+  --color-surface-hover: #27272a;
+  --color-border-subtle: oklch(100% 0 0 / 6%);
+  --color-border-hover: oklch(100% 0 0 / 12%);
+}
+
+/* ── Custom scrollbar (sidebar) ────────────────────────────────── */
+.studio-scroll::-webkit-scrollbar {
+  width: 4px;
+}
+.studio-scroll::-webkit-scrollbar-track {
+  background: transparent;
+}
+.studio-scroll::-webkit-scrollbar-thumb {
+  background: oklch(100% 0 0 / 8%);
+  border-radius: 4px;
+}
+.studio-scroll::-webkit-scrollbar-thumb:hover {
+  background: oklch(100% 0 0 / 16%);
+}
+
+/* Firefox */
+.studio-scroll {
+  scrollbar-width: thin;
+  scrollbar-color: oklch(100% 0 0 / 8%) transparent;
+}
+
+/* ── Range input (dark) ────────────────────────────────────────── */
+input[type="range"] {
+  -webkit-appearance: none;
+  appearance: none;
+  background: transparent;
+  cursor: pointer;
+  height: 20px;
+}
+
+input[type="range"]::-webkit-slider-runnable-track {
+  height: 4px;
+  border-radius: 2px;
+  background: oklch(100% 0 0 / 8%);
+}
+
+input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: #3b82f6;
+  margin-top: -5px;
+  box-shadow: 0 0 0 2px #09090b, 0 0 0 3px oklch(100% 0 0 / 10%);
+  transition: box-shadow 0.15s ease;
+}
+
+input[type="range"]::-webkit-slider-thumb:hover {
+  box-shadow: 0 0 0 2px #09090b, 0 0 0 4px #3b82f6;
+}
+
+input[type="range"]::-moz-range-track {
+  height: 4px;
+  border-radius: 2px;
+  background: oklch(100% 0 0 / 8%);
+}
+
+input[type="range"]::-moz-range-thumb {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: #3b82f6;
+  border: 2px solid #09090b;
+  box-shadow: 0 0 0 1px oklch(100% 0 0 / 10%);
+}
+
+/* ── Dot grid background ───────────────────────────────────────── */
+.canvas-grid {
+  background-image: radial-gradient(circle, oklch(100% 0 0 / 6%) 1px, transparent 1px);
+  background-size: 20px 20px;
+}
+
+/* ── Number input spinner hide ─────────────────────────────────── */
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+input[type="number"] {
+  -moz-appearance: textfield;
+}
+
+/* ── Font faces ────────────────────────────────────────────────── */
 @font-face {
   font-family: "Font Awesome 6 Free";
   font-style: normal;
