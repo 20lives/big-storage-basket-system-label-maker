@@ -1,0 +1,64 @@
+@import "tailwindcss";
+
+@font-face {
+  font-family: "Font Awesome 6 Free";
+  font-style: normal;
+  font-weight: 900;
+  src: url("/fonts/fa-solid-900.ttf") format("truetype");
+}
+
+@font-face {
+  font-family: "Liberation Sans";
+  font-style: normal;
+  font-weight: 700;
+  src: url("/fonts/LiberationSans-Bold.ttf") format("truetype");
+}
+
+@font-face {
+  font-family: "Liberation Serif";
+  font-style: normal;
+  font-weight: 700;
+  src: url("/fonts/LiberationSerif-Bold.ttf") format("truetype");
+}
+
+@font-face {
+  font-family: "Liberation Mono";
+  font-style: normal;
+  font-weight: 700;
+  src: url("/fonts/LiberationMono-Bold.ttf") format("truetype");
+}
+
+@font-face {
+  font-family: "Roboto";
+  font-style: normal;
+  font-weight: 700;
+  src: url("/fonts/Roboto-Bold.ttf") format("truetype");
+}
+
+@font-face {
+  font-family: "Poppins";
+  font-style: normal;
+  font-weight: 700;
+  src: url("/fonts/Poppins-Bold.ttf") format("truetype");
+}
+
+@font-face {
+  font-family: "Oswald";
+  font-style: normal;
+  font-weight: 700;
+  src: url("/fonts/Oswald-Bold.ttf") format("truetype");
+}
+
+@font-face {
+  font-family: "Nunito";
+  font-style: normal;
+  font-weight: 700;
+  src: url("/fonts/Nunito-Bold.ttf") format("truetype");
+}
+
+@font-face {
+  font-family: "Caveat";
+  font-style: normal;
+  font-weight: 700;
+  src: url("/fonts/Caveat-Bold.ttf") format("truetype");
+}

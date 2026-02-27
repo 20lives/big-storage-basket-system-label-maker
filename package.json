@@ -1,0 +1,58 @@
+{
+  "name": "big-storage-basket-system-label-maker",
+  "version": "1.0.0",
+  "description": "Parametric 3D-printable storage label generator with web UI and CLI",
+  "module": "index.ts",
+  "type": "module",
+  "license": "MIT",
+  "author": "20lives",
+  "homepage": "https://github.com/20lives/Big-Storage-Basket-System-Label-Maker#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/20lives/Big-Storage-Basket-System-Label-Maker.git"
+  },
+  "bugs": {
+    "url": "https://github.com/20lives/Big-Storage-Basket-System-Label-Maker/issues"
+  },
+  "keywords": [
+    "3d-printing",
+    "label-maker",
+    "openscad",
+    "parametric",
+    "storage",
+    "bun",
+    "typescript",
+    "dual-color"
+  ],
+  "scripts": {
+    "generate": "bun run src/generate.ts",
+    "batch": "bun run src/generate.ts --batch examples/labels.json",
+    "preview": "bun run src/generate.ts && openscad out/label.scad &",
+    "poc": "bun --hot web/server.ts",
+    "dev": "bunx vite",
+    "build": "bunx vite build",
+    "start": "bunx vite preview"
+  },
+  "devDependencies": {
+    "@types/bun": "latest",
+    "@types/react": "^19.2.14",
+    "@types/react-dom": "^19.2.3"
+  },
+  "peerDependencies": {
+    "typescript": "^5"
+  },
+  "dependencies": {
+    "@fortawesome/fontawesome-free": "^7.2.0",
+    "@tailwindcss/vite": "^4.2.1",
+    "@tanstack/react-router": "^1.163.2",
+    "@tanstack/react-start": "^1.163.2",
+    "@vitejs/plugin-react": "^5.1.4",
+    "fflate": "^0.8.2",
+    "react": "^19.2.4",
+    "react-dom": "^19.2.4",
+    "scad-js": "^0.6.9",
+    "tailwindcss": "^4.2.1",
+    "vite": "^7.3.1",
+    "vite-tsconfig-paths": "^6.1.1"
+  }
+}

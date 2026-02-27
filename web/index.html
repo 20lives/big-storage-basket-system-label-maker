@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Label Maker — POC</title>
+  <style>
+    body { font-family: system-ui, sans-serif; max-width: 520px; margin: 60px auto; padding: 0 20px; }
+    h1 { margin-bottom: 4px; }
+    p { color: #666; margin-top: 0; }
+    button { padding: 12px 24px; font-size: 16px; cursor: pointer; border-radius: 6px; border: 1px solid #ccc; }
+    button:disabled { opacity: 0.5; cursor: wait; }
+    #status { margin-top: 16px; font-size: 14px; white-space: pre-line; }
+  </style>
+</head>
+<body>
+  <h1>Label Maker POC</h1>
+  <p>Client-side STL generation: scad-js + openscad-wasm in the browser.</p>
+  <button id="generate">Generate STL</button>
+  <div id="status"></div>
+  <script type="module" src="./app.ts"></script>
+</body>
+</html>
