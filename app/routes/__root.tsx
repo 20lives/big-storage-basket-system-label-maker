@@ -12,7 +12,8 @@ export const Route = createRootRoute({
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "Big Storage Basket System Label Maker" },
+      { title: "Big Storage Basket System — Label Maker" },
+      { name: "theme-color", content: "#09090b" },
     ],
     links: [
       {
@@ -26,8 +27,8 @@ export const Route = createRootRoute({
   }),
   component: RootComponent,
   notFoundComponent: () => (
-    <div className="flex min-h-screen items-center justify-center">
-      <p className="text-gray-400">Page not found</p>
+    <div className="flex h-screen items-center justify-center bg-app-bg">
+      <p className="text-zinc-500">Page not found</p>
     </div>
   ),
 });
@@ -46,7 +47,7 @@ function RootDocument({ children }: Readonly<{ children: ReactNode }>) {
       <head>
         <HeadContent />
       </head>
-      <body className="bg-gray-50 text-gray-900 antialiased">
+      <body className="bg-app-bg text-zinc-100 antialiased md:overflow-hidden">
         {children}
         <Scripts />
       </body>
