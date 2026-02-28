@@ -214,7 +214,7 @@ function textLabel(cfg: LabelConfig): ScadObject {
   const sepX = hasIcon ? (isIconRight ? innerW / 2 - iconZoneW - cfg.textMargin : -innerW / 2 + iconZoneW + cfg.textMargin) : 0;
   const textZoneW = hasIcon ? innerW - iconZoneW - sepWidth - cfg.textMargin : innerW;
   // Text block center X (in label coords, 0 = label center)
-  const textCenterX = hasIcon ? (isIconRight ? -(sepX + sepWidth / 2 + textZoneW / 2 + cfg.textMargin / 2) : sepX + sepWidth / 2 + textZoneW / 2 + cfg.textMargin / 2) : 0;
+  const textCenterX = hasIcon ? (isIconRight ? sepX - sepWidth / 2 - textZoneW / 2 - cfg.textMargin / 2 : sepX + sepWidth / 2 + textZoneW / 2 + cfg.textMargin / 2) : 0;
 
   // ── Icon ──────────────────────────────────────────────────────────────────
   const parts: ScadObject[] = [];
