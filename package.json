@@ -1,8 +1,7 @@
 {
   "name": "big-storage-basket-system-label-maker",
   "version": "1.0.0",
-  "description": "Parametric 3D-printable storage label generator with web UI and CLI",
-  "module": "index.ts",
+  "description": "Parametric 3D-printable storage label generator with web UI",
   "type": "module",
   "license": "MIT",
   "author": "20lives",
@@ -25,10 +24,6 @@
     "dual-color"
   ],
   "scripts": {
-    "generate": "bun run src/generate.ts",
-    "batch": "bun run src/generate.ts --batch examples/labels.json",
-    "preview": "bun run src/generate.ts && openscad out/label.scad &",
-    "poc": "bun --hot web/server.ts",
     "dev": "bunx vite",
     "build": "bunx vite build",
     "start": "bunx vite preview"
