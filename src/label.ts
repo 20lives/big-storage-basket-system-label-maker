@@ -65,6 +65,8 @@ export interface LabelConfig {
   icon?: string;
   /** Position of the icon relative to text: "left" (default) or "right" */
   iconPosition?: "left" | "right";
+  /** Icon zone scale relative to inner height (0.3–1.0, default 0.85) */
+  iconScale?: number;
   /** Font family key for primary text */
   fontFamily: FontKey;
   /** Font weight for primary text */
@@ -209,7 +211,7 @@ function textLabel(cfg: LabelConfig): ScadObject {
   // ── Layout geometry ───────────────────────────────────────────────────────
   const hasIcon = !!iconCodepoint;
   const sepWidth = 0.8;              // separator bar width (mm)
-  const iconZoneW = hasIcon ? innerH * 0.85 : 0;  // icon zone is roughly square
+  const iconZoneW = hasIcon ? innerH * (cfg.iconScale ?? 0.85) : 0;  // icon zone width
   const isIconRight = cfg.iconPosition === "right";
   
   // When icon is on the right, we mirror the layout

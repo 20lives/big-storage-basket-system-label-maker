@@ -24,7 +24,7 @@ export function LabelPreview({ config }: LabelPreviewProps) {
   const hasIcon = !!iconCodepoint;
 
   // Layout calculations (mirrors label.ts logic)
-  const iconZoneW = hasIcon ? innerH * 0.85 : 0;
+  const iconZoneW = hasIcon ? innerH * (config.iconScale ?? 0.85) : 0;
   const sepW = hasIcon ? 0.8 : 0;
   const textZoneW = innerW - iconZoneW - sepW;
 
