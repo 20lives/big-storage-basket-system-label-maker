@@ -14,6 +14,13 @@
     "verbatimModuleSyntax": true,
     "noEmit": true,
 
+    // Path aliases (resolved by vite-tsconfig-paths)
+    "baseUrl": ".",
+    "paths": {
+      "~/*": ["./src/*"],
+      "@/*": ["./app/*"]
+    },
+
     // Best practices
     "strict": true,
     "skipLibCheck": true,
