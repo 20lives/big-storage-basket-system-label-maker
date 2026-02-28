@@ -11,46 +11,50 @@
 import { makeLabel } from "../../src/label";
 import { createOpenSCAD } from "openscad-wasm";
 import type { LabelConfig } from "../../src/label";
-import { FONTS, FONT_KEYS } from "../../src/fonts";
+import { FONTS, FA_ICON_FONT, collectFontFiles } from "../../src/fonts";
+import type { FontKey } from "../../src/fonts";
 import type { OpenSCAD } from "openscad-wasm";
-
-// Font bytes cached across instances to avoid re-fetching
 
 const FONTS_CONF = `<?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE fontconfig SYSTEM "urn:fontconfig:fonts.dtd">
 <fontconfig>
   <dir>/fonts</dir>
+  <cachedir>/tmp/cache</cachedir>
 </fontconfig>`;
 
 function post(msg: any) {
   self.postMessage(msg);
 }
 
-let fontCache: Map<string, Uint8Array> | null = null;
+// Per-file cache to dedupe font fetches
+const fontFileCache = new Map<string, Promise<Uint8Array>>();
 
-async function loadFonts() {
-  if (fontCache) return fontCache;
-
-  post({ type: "progress", message: "Loading fonts..." });
-
-  // Fetch all text fonts + FA icon font in parallel
-  const fontFiles = FONT_KEYS.map((key) => FONTS[key].file);
-  const allFiles = [...fontFiles, "fa-solid-900.ttf"];
-  const responses = await Promise.all(allFiles.map((f) => fetch(`/fonts/${f}`)));
-
-  fontCache = new Map();
-  for (let i = 0; i < allFiles.length; i++) {
-    if (responses[i].ok) {
-      fontCache.set(allFiles[i], new Uint8Array(await responses[i].arrayBuffer()));
-    }
+function fetchFont(filename: string): Promise<Uint8Array> {
+  let cached = fontFileCache.get(filename);
+  if (!cached) {
+    cached = fetch(`/fonts/${filename}`)
+      .then((r) => {
+        if (!r.ok) throw new Error(`Failed to fetch font: ${filename}`);
+        return r.arrayBuffer();
+      })
+      .then((buf) => new Uint8Array(buf));
+    fontFileCache.set(filename, cached);
   }
-  return fontCache;
+  return cached;
 }
 
-async function createInstance(): Promise<OpenSCAD> {
-  // Pre-fetch fonts before WASM creation (cached after first call)
-  const fonts = await loadFonts();
+async function loadFontsForConfig(
+  primaryKey: FontKey,
+  subtitleKey?: FontKey,
+): Promise<Map<string, Uint8Array>> {
+  const needed = collectFontFiles(primaryKey, subtitleKey);
+  const entries = await Promise.all(
+    needed.map(async (f) => [f, await fetchFont(f)] as const),
+  );
+  return new Map(entries);
+}
 
+async function createInstance(fonts: Map<string, Uint8Array>): Promise<OpenSCAD> {
   post({ type: "progress", message: "Loading OpenSCAD WASM engine..." });
 
   const instance = await createOpenSCAD({
@@ -65,6 +69,12 @@ async function createInstance(): Promise<OpenSCAD> {
       for (const [filename, data] of fonts) {
         mod.FS.writeFile(`/fonts/${filename}`, data);
       }
+      try {
+        mod.FS.mkdir("/tmp");
+      } catch {}
+      try {
+        mod.FS.mkdir("/tmp/cache");
+      } catch {}
       mod.ENV.FONTCONFIG_FILE = "/fonts/fonts.conf";
     },
   });
@@ -98,7 +108,13 @@ self.onmessage = async (
   const { config, part } = e.data;
 
   try {
-    const scad = await createInstance();
+    post({ type: "progress", message: "Loading fonts..." });
+    const fonts = await loadFontsForConfig(
+      config.fontFamily as FontKey,
+      config.subtitleFontFamily as FontKey | undefined,
+    );
+
+    const scad = await createInstance(fonts);
 
     post({ type: "progress", message: "Building geometry..." });
     const label = makeLabel(config);
@@ -107,7 +123,7 @@ self.onmessage = async (
     const scadCode = obj.serialize({ $fn: 32 });
     const safeName = config.labelText
       .toLowerCase()
-      .replace(/[^a-z0-9]+/g, "_")
+      .replace(/[^\p{L}\p{N}]+/gu, "_")
       .replace(/^_|_$/g, "");
     const suffix = part === "combined" ? "" : `_${part}`;
     const filename = `${safeName}${suffix}.stl`;
