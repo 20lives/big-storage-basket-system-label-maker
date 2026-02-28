@@ -261,7 +261,8 @@ export function resolveVariant(key: FontKey, weight: FontWeight): FontVariant {
   return (
     family.variants[weight] ??
     family.variants["bold"] ??
-    family.variants["regular"]!
+    family.variants["regular"] ??
+    { scadName: `${family.label}:style=Regular`, cssWeight: 400 }
   );
 }
 

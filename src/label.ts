@@ -133,7 +133,7 @@ function roundedRect(
   depth: number,
   r: number
 ): ScadObject {
-  r = Math.min(r, width / 2 - 0.1, height / 2 - 0.1);
+  r = Math.max(0, Math.min(r, width / 2 - 0.1, height / 2 - 0.1));
   const cyl = () => cylinder(depth, r, { $fn: 32 });
   const dx = width / 2 - r;
   const dy = height / 2 - r;
@@ -196,8 +196,8 @@ function textLabel(cfg: LabelConfig): ScadObject {
     cfg.subtitleFontFamily ?? cfg.fontFamily,
     cfg.subtitleFontWeight ?? "regular",
   ).scadName;
-  const innerW = cfg.width  - cfg.borderWidth * 2 - cfg.textMargin * 2;
-  const innerH = cfg.height - cfg.borderWidth * 2 - cfg.textMargin * 2;
+  const innerW = Math.max(0, cfg.width  - cfg.borderWidth * 2 - cfg.textMargin * 2);
+  const innerH = Math.max(0, cfg.height - cfg.borderWidth * 2 - cfg.textMargin * 2);
 
   // ── Resolve icon codepoint ────────────────────────────────────────────────
   let iconCodepoint: string | undefined;

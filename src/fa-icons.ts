@@ -7146,6 +7146,7 @@ export const FA_ALIASES: Record<string, string> = {
 
 export function resolveIcon(name: string): string | undefined {
   const key = name.toLowerCase().replace(/_/g, "-");
-  const codepoint = FA_ICONS[key] ?? FA_ICONS[FA_ALIASES[key]];
+  const alias = FA_ALIASES[key];
+  const codepoint = FA_ICONS[key] ?? (alias ? FA_ICONS[alias] : undefined);
   return codepoint;
 }
