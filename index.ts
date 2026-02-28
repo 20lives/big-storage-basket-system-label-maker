@@ -11,5 +11,5 @@
  */
 export { makeLabel, serializeLabel, defaultConfig } from "./src/label";
 export type { LabelConfig } from "./src/label";
-export { FONTS, FONT_KEYS, DEFAULT_FONT } from "./src/fonts";
-export type { FontKey, FontInfo } from "./src/fonts";
+export { FONTS, FONT_KEYS, FA_ICON_FONT, DEFAULT_FONT, DEFAULT_WEIGHT, resolveVariant, collectFontFiles, migrateFontKey } from "./src/fonts";
+export type { FontKey, FontWeight, FontFamily, FontVariant } from "./src/fonts";
