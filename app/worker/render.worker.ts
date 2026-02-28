@@ -29,7 +29,7 @@ function post(msg: any) {
 // Per-file cache to dedupe font fetches
 const fontFileCache = new Map<string, Promise<Uint8Array>>();
 
-function fetchFont(filename: string): Promise<Uint8Array> {
+function fetchFont(filename: string, retries = 2): Promise<Uint8Array> {
   let cached = fontFileCache.get(filename);
   if (!cached) {
     cached = fetch(`/fonts/${filename}`)
@@ -37,7 +37,12 @@ function fetchFont(filename: string): Promise<Uint8Array> {
         if (!r.ok) throw new Error(`Failed to fetch font: ${filename}`);
         return r.arrayBuffer();
       })
-      .then((buf) => new Uint8Array(buf));
+      .then((buf) => new Uint8Array(buf))
+      .catch((err) => {
+        fontFileCache.delete(filename);
+        if (retries > 0) return fetchFont(filename, retries - 1);
+        throw err;
+      });
     fontFileCache.set(filename, cached);
   }
   return cached;

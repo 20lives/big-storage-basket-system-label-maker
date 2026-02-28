@@ -30,6 +30,7 @@ function safeName(text: string): string {
 
 export function useRenderer() {
   const workerRef = useRef<Worker | null>(null);
+  const renderingRef = useRef(false);
   const [state, setState] = useState<RenderState>({
     status: "idle",
     progress: "",
@@ -39,10 +40,15 @@ export function useRenderer() {
   // Create worker on first use
   const getWorker = useCallback(() => {
     if (!workerRef.current) {
-      workerRef.current = new Worker(
+      const w = new Worker(
         new URL("../worker/render.worker.ts", import.meta.url),
         { type: "module" },
       );
+      w.onerror = (ev) => {
+        renderingRef.current = false;
+        setState({ status: "error", progress: "", error: ev.message || "Worker crashed" });
+      };
+      workerRef.current = w;
     }
     return workerRef.current;
   }, []);
@@ -91,6 +97,8 @@ export function useRenderer() {
   /** Render a single STL and trigger download */
   const renderSTL = useCallback(
     async (config: LabelConfig, part: RenderPart): Promise<void> => {
+      if (renderingRef.current) return;
+      renderingRef.current = true;
       setState({ status: "loading", progress: "Initializing...", error: null });
       try {
         const { stl, filename } = await renderPart(config, part);
@@ -99,6 +107,8 @@ export function useRenderer() {
       } catch (err) {
         const message = err instanceof Error ? err.message : String(err);
         setState({ status: "error", progress: "", error: message });
+      } finally {
+        renderingRef.current = false;
       }
     },
     [renderPart],
@@ -107,6 +117,8 @@ export function useRenderer() {
   /** Render base + top, zip them together, and download as a single .zip */
   const renderZip = useCallback(
     async (config: LabelConfig): Promise<void> => {
+      if (renderingRef.current) return;
+      renderingRef.current = true;
       setState({ status: "loading", progress: "Rendering base...", error: null });
       try {
         const base = await renderPart(config, "base");
@@ -126,6 +138,8 @@ export function useRenderer() {
       } catch (err) {
         const message = err instanceof Error ? err.message : String(err);
         setState({ status: "error", progress: "", error: message });
+      } finally {
+        renderingRef.current = false;
       }
     },
     [renderPart],
