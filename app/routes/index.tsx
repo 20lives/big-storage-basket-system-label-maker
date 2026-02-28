@@ -16,7 +16,7 @@ function IndexPage() {
   const [aboutOpen, setAboutOpen] = useState(false);
 
   return (
-    <div className="flex min-h-screen w-full flex-col md:h-screen md:overflow-hidden">
+    <div className="flex min-h-dvh w-full flex-col md:h-dvh md:overflow-hidden">
       {/* ── Header ──────────────────────────────────────────── */}
       <header className="flex h-12 shrink-0 items-center justify-between border-b border-border-subtle bg-panel-bg px-4 md:px-5">
         <div className="flex items-center gap-2.5">

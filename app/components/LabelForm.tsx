@@ -34,6 +34,10 @@ function NumberInput({
         max={max}
         step={step}
         onChange={(e) => onChange(Number(e.target.value))}
+        onBlur={() => {
+          const clamped = Math.min(max ?? Infinity, Math.max(min, value));
+          if (clamped !== value) onChange(clamped);
+        }}
         className="w-20 rounded-md border border-border-subtle bg-surface px-2.5 py-1.5 text-xs tabular-nums text-zinc-200 transition focus:border-blue-500/50 focus:ring-1 focus:ring-blue-500/30 focus:outline-none"
       />
     </label>

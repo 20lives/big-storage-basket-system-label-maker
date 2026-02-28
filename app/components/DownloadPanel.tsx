@@ -38,7 +38,7 @@ export function DownloadPanel({
 }: DownloadPanelProps) {
   const [method, setMethod] = useState<Method>("combined");
   const isLoading = status === "loading";
-  const isEmpty = !config.labelText.trim();
+  const isEmpty = !config.labelText.trim() && !config.icon;
 
   const safeName = config.labelText
     .toLowerCase()
@@ -54,9 +54,11 @@ export function DownloadPanel({
     <div className="relative mx-auto w-full max-w-xl">
       <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:gap-4">
       {/* Method selector — segmented control */}
-        <div className="flex shrink-0 self-start rounded-lg border border-border-subtle bg-surface p-0.5">
+        <div role="radiogroup" aria-label="Export method" className="flex shrink-0 self-start rounded-lg border border-border-subtle bg-surface p-0.5">
         <button
           type="button"
+          role="radio"
+          aria-checked={method === "combined"}
           onClick={() => setMethod("combined")}
           className={`rounded-md px-3 py-1.5 text-xs font-medium transition ${
             method === "combined"
@@ -68,6 +70,8 @@ export function DownloadPanel({
         </button>
         <button
           type="button"
+          role="radio"
+          aria-checked={method === "separate"}
           onClick={() => setMethod("separate")}
           className={`rounded-md px-3 py-1.5 text-xs font-medium transition ${
             method === "separate"
@@ -129,7 +133,7 @@ export function DownloadPanel({
       </p>
       {/* Error toast */}
       {error && (
-        <div className="absolute bottom-full left-0 right-0 mb-2 rounded-lg border border-red-500/20 bg-red-950/80 px-3 py-2 text-xs text-red-300 backdrop-blur-sm">
+        <div role="alert" className="absolute bottom-full left-0 right-0 mb-2 rounded-lg border border-red-500/20 bg-red-950/80 px-3 py-2 text-xs text-red-300 backdrop-blur-sm">
           {error}
         </div>
       )}

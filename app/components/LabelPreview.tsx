@@ -1,3 +1,4 @@
+import { useId } from "react";
 import type { LabelConfig } from "../../src/label";
 import { resolveIcon } from "../../src/fa-icons";
 import { FONTS, resolveVariant } from "../../src/fonts";
@@ -7,6 +8,7 @@ interface LabelPreviewProps {
 }
 
 export function LabelPreview({ config }: LabelPreviewProps) {
+  const clipId = useId();
   const { width, height, cornerRadius, borderWidth, textMargin } = config;
   const primaryCssFont = FONTS[config.fontFamily].cssFamily;
   const primaryCssWeight = resolveVariant(config.fontFamily, config.fontWeight).cssWeight;
@@ -72,6 +74,17 @@ export function LabelPreview({ config }: LabelPreviewProps) {
         className="w-full drop-shadow-[0_4px_20px_rgba(0,0,0,0.4)]"
         style={{ aspectRatio: `${width} / ${height}` }}
       >
+
+        <defs>
+          <clipPath id={clipId}>
+            <rect
+              x={actualTextCX - (hasIcon ? textZoneW : innerW) / 2}
+              y={borderWidth + textMargin}
+              width={hasIcon ? textZoneW : innerW}
+              height={Math.max(0, innerH)}
+            />
+          </clipPath>
+        </defs>
         {/* Base plate (color 1) — dark surface */}
         <rect
           x={0}
@@ -137,6 +150,7 @@ export function LabelPreview({ config }: LabelPreviewProps) {
           y={primaryY}
           textAnchor="middle"
           dominantBaseline="central"
+          clipPath={`url(#${clipId})`}
           style={{
             fontSize: `${primarySize}px`,
             fontFamily: primaryCssFont,
@@ -154,6 +168,7 @@ export function LabelPreview({ config }: LabelPreviewProps) {
             y={subtitleY}
             textAnchor="middle"
             dominantBaseline="central"
+            clipPath={`url(#${clipId})`}
             style={{
               fontSize: `${subtitleSize}px`,
               fontFamily: subtitleCssFont,
