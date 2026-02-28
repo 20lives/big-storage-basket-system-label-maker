@@ -51,7 +51,7 @@ export function IconPicker({ value, onChange, iconPosition, onPositionChange }: 
         {value && isValid && (
           <span
             className="flex h-9 w-9 shrink-0 items-center justify-center rounded-md border border-border-subtle bg-surface text-base text-zinc-300"
-            style={{ fontFamily: '"Font Awesome 6 Free"', fontWeight: 900 }}
+            style={{ fontFamily: '"Font Awesome 7 Free"', fontWeight: 900 }}
           >
             {results.find((r) => r.name === value)?.codepoint ?? ""}
           </span>
@@ -157,7 +157,7 @@ export function IconPicker({ value, onChange, iconPosition, onPositionChange }: 
                       : "text-zinc-400 group-hover:text-zinc-200"
                   }`}
                   style={{
-                    fontFamily: '"Font Awesome 6 Free"',
+                    fontFamily: '"Font Awesome 7 Free"',
                     fontWeight: 900,
                   }}
                 >

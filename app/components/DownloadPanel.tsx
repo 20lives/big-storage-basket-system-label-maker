@@ -42,7 +42,7 @@ export function DownloadPanel({
 
   const safeName = config.labelText
     .toLowerCase()
-    .replace(/[^a-z0-9]+/g, "_")
+    .replace(/[^\p{L}\p{N}]+/gu, "_")
     .replace(/^_|_$/g, "");
 
   const handleScadDownload = () => {
