@@ -193,6 +193,18 @@ export function LabelForm({ config, onChange, onReset }: LabelFormProps) {
           iconPosition={config.iconPosition}
           onPositionChange={(iconPosition) => onChange({ iconPosition })}
         />
+
+        {config.icon && (
+          <SliderInput
+            label="Icon size"
+            value={config.iconScale ?? 0.85}
+            onChange={(v) => onChange({ iconScale: v })}
+            min={0.3}
+            max={1}
+            step={0.05}
+            unit=""
+          />
+        )}
       </fieldset>
 
       {/* ── Typography ─────────────────────────────────────── */}
@@ -290,15 +302,43 @@ export function LabelForm({ config, onChange, onReset }: LabelFormProps) {
         />
       </fieldset>
 
-      {/* ── Depth ─────────────────────────────────────────── */}
+      {/* ── Advanced ───────────────────────────────────────── */}
       <fieldset className="flex flex-col gap-3">
         <legend className="mb-1 text-[10px] font-semibold tracking-widest text-zinc-500 uppercase">
-          Depth
+          Advanced
         </legend>
 
         <div className="grid grid-cols-2 gap-3">
           <NumberInput
-            label="Base"
+            label="Width"
+            value={config.width}
+            onChange={(v) => onChange({ width: v })}
+            min={20}
+            max={120}
+            step={0.1}
+          />
+          <NumberInput
+            label="Height"
+            value={config.height}
+            onChange={(v) => onChange({ height: v })}
+            min={10}
+            max={60}
+            step={0.1}
+          />
+        </div>
+
+        <SliderInput
+          label="Corner radius"
+          value={config.cornerRadius}
+          onChange={(v) => onChange({ cornerRadius: v })}
+          min={0}
+          max={12}
+          step={0.5}
+        />
+
+        <div className="grid grid-cols-2 gap-3">
+          <NumberInput
+            label="Base depth"
             value={config.baseDepth}
             onChange={(v) => onChange({ baseDepth: v })}
             min={0.1}
@@ -314,6 +354,15 @@ export function LabelForm({ config, onChange, onReset }: LabelFormProps) {
             step={0.1}
           />
         </div>
+
+        <SliderInput
+          label="Text margin"
+          value={config.textMargin}
+          onChange={(v) => onChange({ textMargin: v })}
+          min={0}
+          max={4}
+          step={0.5}
+        />
       </fieldset>
 
       {/* ── Actions ──────────────────────────────────────── */}
