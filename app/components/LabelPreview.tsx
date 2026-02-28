@@ -1,6 +1,6 @@
 import type { LabelConfig } from "../../src/label";
 import { resolveIcon } from "../../src/fa-icons";
-import { FONTS } from "../../src/fonts";
+import { FONTS, resolveVariant } from "../../src/fonts";
 
 interface LabelPreviewProps {
   config: LabelConfig;
@@ -8,7 +8,12 @@ interface LabelPreviewProps {
 
 export function LabelPreview({ config }: LabelPreviewProps) {
   const { width, height, cornerRadius, borderWidth, textMargin } = config;
-  const cssFont = FONTS[config.fontFamily].cssFamily;
+  const primaryCssFont = FONTS[config.fontFamily].cssFamily;
+  const primaryCssWeight = resolveVariant(config.fontFamily, config.fontWeight).cssWeight;
+  const subtitleKey = config.subtitleFontFamily ?? config.fontFamily;
+  const subtitleWeight = config.subtitleFontWeight ?? "regular";
+  const subtitleCssFont = FONTS[subtitleKey].cssFamily;
+  const subtitleCssWeight = resolveVariant(subtitleKey, subtitleWeight).cssWeight;
 
   // Inner area after border
   const innerW = width - borderWidth * 2 - textMargin * 2;
@@ -104,7 +109,7 @@ export function LabelPreview({ config }: LabelPreviewProps) {
               textAnchor="middle"
               dominantBaseline="central"
               style={{
-                fontFamily: '"Font Awesome 6 Free"',
+                fontFamily: '"Font Awesome 7 Free"',
                 fontWeight: 900,
                 fontSize: `${iconZoneW * 0.6}px`,
               }}
@@ -134,8 +139,8 @@ export function LabelPreview({ config }: LabelPreviewProps) {
           dominantBaseline="central"
           style={{
             fontSize: `${primarySize}px`,
-            fontFamily: cssFont,
-            fontWeight: 700,
+            fontFamily: primaryCssFont,
+            fontWeight: primaryCssWeight,
           }}
           fill="#f4f4f5"
         >
@@ -151,8 +156,8 @@ export function LabelPreview({ config }: LabelPreviewProps) {
             dominantBaseline="central"
             style={{
               fontSize: `${subtitleSize}px`,
-              fontFamily: cssFont,
-              fontWeight: 700,
+              fontFamily: subtitleCssFont,
+              fontWeight: subtitleCssWeight,
             }}
             fill="#a1a1aa"
           >
