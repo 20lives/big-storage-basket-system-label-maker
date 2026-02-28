@@ -95,38 +95,66 @@ input[type="number"] {
 
 /* ── Font faces ────────────────────────────────────────────────── */
 @font-face {
-  font-family: "Font Awesome 6 Free";
-  font-style: normal;
-  font-weight: 900;
-  src: url("/fonts/fa-solid-900.ttf") format("truetype");
-}
-
-@font-face {
-  font-family: "Liberation Sans";
-  font-style: normal;
-  font-weight: 700;
-  src: url("/fonts/LiberationSans-Bold.ttf") format("truetype");
-}
-
-@font-face {
-  font-family: "Liberation Serif";
-  font-style: normal;
-  font-weight: 700;
-  src: url("/fonts/LiberationSerif-Bold.ttf") format("truetype");
-}
-
-@font-face {
-  font-family: "Liberation Mono";
-  font-style: normal;
-  font-weight: 700;
-  src: url("/fonts/LiberationMono-Bold.ttf") format("truetype");
-}
-
-@font-face {
   font-family: "Roboto";
   font-style: normal;
+  font-weight: 100 900;
+  src: url("/fonts/Roboto-Variable.ttf") format("truetype");
+}
+
+@font-face {
+  font-family: "Open Sans";
+  font-style: normal;
+  font-weight: 100 900;
+  src: url("/fonts/OpenSans-Variable.ttf") format("truetype");
+}
+
+@font-face {
+  font-family: "Lato";
+  font-style: normal;
+  font-weight: 400;
+  src: url("/fonts/Lato-Regular.ttf") format("truetype");
+}
+
+@font-face {
+  font-family: "Lato";
+  font-style: normal;
   font-weight: 700;
-  src: url("/fonts/Roboto-Bold.ttf") format("truetype");
+  src: url("/fonts/Lato-Bold.ttf") format("truetype");
+}
+
+@font-face {
+  font-family: "Montserrat";
+  font-style: normal;
+  font-weight: 100 900;
+  src: url("/fonts/Montserrat-Variable.ttf") format("truetype");
+}
+
+@font-face {
+  font-family: "Inter";
+  font-style: normal;
+  font-weight: 100 900;
+  src: url("/fonts/Inter-Variable.ttf") format("truetype");
+}
+
+@font-face {
+  font-family: "Oswald";
+  font-style: normal;
+  font-weight: 100 900;
+  src: url("/fonts/Oswald-Variable.ttf") format("truetype");
+}
+
+@font-face {
+  font-family: "Raleway";
+  font-style: normal;
+  font-weight: 100 900;
+  src: url("/fonts/Raleway-Variable.ttf") format("truetype");
+}
+
+@font-face {
+  font-family: "Poppins";
+  font-style: normal;
+  font-weight: 400;
+  src: url("/fonts/Poppins-Regular.ttf") format("truetype");
 }
 
 @font-face {
@@ -137,22 +165,105 @@ input[type="number"] {
 }
 
 @font-face {
-  font-family: "Oswald";
+  font-family: "PT Sans";
+  font-style: normal;
+  font-weight: 400;
+  src: url("/fonts/PTSans-Regular.ttf") format("truetype");
+}
+
+@font-face {
+  font-family: "PT Sans";
   font-style: normal;
   font-weight: 700;
-  src: url("/fonts/Oswald-Bold.ttf") format("truetype");
+  src: url("/fonts/PTSans-Bold.ttf") format("truetype");
+}
+
+@font-face {
+  font-family: "Merriweather";
+  font-style: normal;
+  font-weight: 100 900;
+  src: url("/fonts/Merriweather-Variable.ttf") format("truetype");
+}
+
+@font-face {
+  font-family: "Playfair Display";
+  font-style: normal;
+  font-weight: 100 900;
+  src: url("/fonts/PlayfairDisplay-Variable.ttf") format("truetype");
 }
 
 @font-face {
   font-family: "Nunito";
   font-style: normal;
-  font-weight: 700;
-  src: url("/fonts/Nunito-Bold.ttf") format("truetype");
+  font-weight: 100 900;
+  src: url("/fonts/Nunito-Variable.ttf") format("truetype");
 }
 
 @font-face {
   font-family: "Caveat";
   font-style: normal;
+  font-weight: 100 900;
+  src: url("/fonts/Caveat-Variable.ttf") format("truetype");
+}
+@font-face {
+  font-family: "Noto Sans Hebrew";
+  font-style: normal;
+  font-weight: 400;
+  src: url("/fonts/NotoSansHebrew-Regular.ttf") format("truetype");
+}
+
+@font-face {
+  font-family: "Noto Sans Hebrew";
+  font-style: normal;
   font-weight: 700;
-  src: url("/fonts/Caveat-Bold.ttf") format("truetype");
+  src: url("/fonts/NotoSansHebrew-Bold.ttf") format("truetype");
+}
+
+@font-face {
+  font-family: "Alef";
+  font-style: normal;
+  font-weight: 400;
+  src: url("/fonts/Alef-Regular.ttf") format("truetype");
+}
+
+@font-face {
+  font-family: "Alef";
+  font-style: normal;
+  font-weight: 700;
+  src: url("/fonts/Alef-Bold.ttf") format("truetype");
+}
+
+@font-face {
+  font-family: "Heebo";
+  font-style: normal;
+  font-weight: 400;
+  src: url("/fonts/Heebo-Regular.ttf") format("truetype");
+}
+
+@font-face {
+  font-family: "Heebo";
+  font-style: normal;
+  font-weight: 700;
+  src: url("/fonts/Heebo-Bold.ttf") format("truetype");
+}
+
+@font-face {
+  font-family: "Assistant";
+  font-style: normal;
+  font-weight: 400;
+  src: url("/fonts/Assistant-Regular.ttf") format("truetype");
+}
+
+@font-face {
+  font-family: "Assistant";
+  font-style: normal;
+  font-weight: 700;
+  src: url("/fonts/Assistant-Bold.ttf") format("truetype");
+}
+
+@font-face {
+  font-family: "Font Awesome 7 Free";
+  font-style: normal;
+  font-weight: 900;
+  src: url("/fonts/fa-solid-900.ttf") format("truetype");
 }
