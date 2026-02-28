@@ -33,13 +33,6 @@ test("hello world", () => {
 
 ## Project structure
 
-This project has two interfaces:
-
-### CLI (Bun)
-- Entry: `src/generate.ts` — runs with `bun run generate`
-- Core logic: `src/label.ts`, `src/fa-icons.ts`, `src/render.ts`
-- Uses Bun APIs (`Bun.file`, `process.argv`, etc.)
-
 ### Web UI (TanStack Start + Vite)
 - Entry: `app/routes/index.tsx`
 - Dev: `bun run dev` (runs `bunx vite`)
@@ -49,9 +42,10 @@ This project has two interfaces:
 - Web Worker for openscad-wasm STL rendering (`app/worker/render.worker.ts`)
 - Static fonts in `public/fonts/`
 
-### Shared code
-- `src/label.ts` — parametric 3D model (used by both CLI and web)
-- `src/fa-icons.ts` — Font Awesome icon map (used by both)
+### Core logic (src/)
+- `src/label.ts` — parametric 3D model (used by web worker)
+- `src/fa-icons.ts` — Font Awesome icon map (used by web UI)
+- `src/fonts.ts` — Font registry (used by web UI and worker)
 - These files must remain browser-compatible (`console.warn` not `process.stderr`)
 
 For more information, read the Bun API docs in `node_modules/bun-types/docs/**.mdx`.

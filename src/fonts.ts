@@ -1,5 +1,5 @@
 /**
- * Font registry — shared by CLI, Web UI, and worker.
+ * Font registry — shared by Web UI and worker.
  *
  * Single source of truth for all font metadata:
  *   - OpenSCAD scadName (fontconfig "Family:style=Style")
