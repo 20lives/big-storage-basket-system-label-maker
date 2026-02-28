@@ -55,7 +55,7 @@ export function LabelPreview({ config }: LabelPreviewProps) {
   // while SVG font-size measures the full em-square. Scale up to match.
   const svgScale = 1 / 0.72;
   const primarySize = config.fontSize * svgScale;
-  const subtitleSize = config.fontSize * 0.6 * svgScale;
+  const subtitleSize = (config.subtitleFontSize ?? config.fontSize * 0.6) * svgScale;
 
   // Vertical positioning when subtitle is present (mirrors label.ts h1Y/h2Y)
   const hasSubtitle = !!config.labelText2;

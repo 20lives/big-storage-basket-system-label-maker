@@ -73,6 +73,8 @@ export interface LabelConfig {
   subtitleFontFamily?: FontKey;
   /** Font weight for subtitle (defaults to "regular") */
   subtitleFontWeight?: FontWeight;
+  /** Font size for subtitle in mm (defaults to fontSize * 0.6) */
+  subtitleFontSize?: number;
   // Overall label body
   /** Width of the label in mm */
   width: number;
@@ -257,7 +259,7 @@ function textLabel(cfg: LabelConfig): ScadObject {
         valign: "center",
       }).linear_extrude(h).translate([textCenterX, h1Y, 0]),
       text(cfg.labelText2, {
-        size: cfg.fontSize * 0.6,
+        size: cfg.subtitleFontSize ?? cfg.fontSize * 0.6,
         font: subtitleFont,
         halign: "center",
         valign: "center",

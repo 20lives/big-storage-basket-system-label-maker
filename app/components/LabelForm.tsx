@@ -262,6 +262,17 @@ export function LabelForm({ config, onChange, onReset }: LabelFormProps) {
           max={12}
           step={0.5}
         />
+
+        {config.labelText2 && (
+          <SliderInput
+            label="Sub-text size"
+            value={config.subtitleFontSize ?? config.fontSize * 0.6}
+            onChange={(v) => onChange({ subtitleFontSize: v })}
+            min={2}
+            max={10}
+            step={0.5}
+          />
+        )}
       </fieldset>
 
       {/* ── Border ──────────────────────────────────────────── */}
