@@ -17,8 +17,8 @@ import {
 import type { ScadObject, ScadSpecialVariables } from "scad-js";
 import * as transformations from "scad-js";
 import { resolveIcon } from "./fa-icons";
-import { FONTS, DEFAULT_FONT } from "./fonts";
-import type { FontKey } from "./fonts";
+import { FONTS, FA_ICON_FONT, DEFAULT_FONT, DEFAULT_WEIGHT, resolveVariant } from "./fonts";
+import type { FontKey, FontWeight } from "./fonts";
 
 // ─── Type helpers ────────────────────────────────────────────────────────────
 
@@ -46,7 +46,7 @@ function text(
   return rawObject("text", {
     text: str,
     size: opts.size ?? 6,
-    font: opts.font ?? "Liberation Sans:style=Bold",
+    font: opts.font ?? FONTS[DEFAULT_FONT].variants[DEFAULT_WEIGHT]!.scadName,
     halign: opts.halign ?? "center",
     valign: opts.valign ?? "center",
     spacing: opts.spacing ?? 1,
@@ -65,8 +65,14 @@ export interface LabelConfig {
   icon?: string;
   /** Position of the icon relative to text: "left" (default) or "right" */
   iconPosition?: "left" | "right";
-  /** Font family key */
+  /** Font family key for primary text */
   fontFamily: FontKey;
+  /** Font weight for primary text */
+  fontWeight: FontWeight;
+  /** Font family key for subtitle (defaults to primary font) */
+  subtitleFontFamily?: FontKey;
+  /** Font weight for subtitle (defaults to "regular") */
+  subtitleFontWeight?: FontWeight;
   // Overall label body
   /** Width of the label in mm */
   width: number;
@@ -106,6 +112,8 @@ export const defaultConfig: LabelConfig = {
   textLayerHeight: 0.6,  // Color 2: raised text layer (~3 layers at 0.2mm)
   fontSize: 7,
   fontFamily: DEFAULT_FONT,
+  hasBorder: true,
+  fontWeight: DEFAULT_WEIGHT,
   borderWidth: 1.5,
   textMargin: 1,
 };
@@ -179,7 +187,11 @@ function borderRing(cfg: LabelConfig): ScadObject {
  */
 function textLabel(cfg: LabelConfig): ScadObject {
   const h = cfg.textLayerHeight;
-  const fontName = FONTS[cfg.fontFamily].scadName;
+  const primaryFont = resolveVariant(cfg.fontFamily, cfg.fontWeight).scadName;
+  const subtitleFont = resolveVariant(
+    cfg.subtitleFontFamily ?? cfg.fontFamily,
+    cfg.subtitleFontWeight ?? "regular",
+  ).scadName;
   const innerW = cfg.width  - cfg.borderWidth * 2 - cfg.textMargin * 2;
   const innerH = cfg.height - cfg.borderWidth * 2 - cfg.textMargin * 2;
 
@@ -212,7 +224,7 @@ function textLabel(cfg: LabelConfig): ScadObject {
     const iconX = isIconRight ? innerW / 2 - iconZoneW / 2 : -innerW / 2 + iconZoneW / 2;
     const iconObj = text(iconCodepoint, {
       size: iconSize,
-      font: "Font Awesome 7 Free:style=Solid",
+      font: FA_ICON_FONT.scadName,
       halign: "center",
       valign: "center",
     }).linear_extrude(h).translate([iconX, 0, 0]);
@@ -229,7 +241,7 @@ function textLabel(cfg: LabelConfig): ScadObject {
     parts.push(
       text(cfg.labelText, {
         size: cfg.fontSize,
-        font: fontName,
+        font: primaryFont,
         halign: "center",
         valign: "center",
       }).linear_extrude(h).translate([textCenterX, 0, 0])
@@ -240,13 +252,13 @@ function textLabel(cfg: LabelConfig): ScadObject {
     parts.push(
       text(cfg.labelText, {
         size: cfg.fontSize,
-        font: fontName,
+        font: primaryFont,
         halign: "center",
         valign: "center",
       }).linear_extrude(h).translate([textCenterX, h1Y, 0]),
       text(cfg.labelText2, {
         size: cfg.fontSize * 0.6,
-        font: fontName,
+        font: subtitleFont,
         halign: "center",
         valign: "center",
       }).linear_extrude(h).translate([textCenterX, h2Y, 0])
