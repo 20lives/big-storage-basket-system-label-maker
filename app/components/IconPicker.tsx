@@ -1,6 +1,7 @@
 import { useState, useRef, useEffect, useMemo } from "react";
 import { searchIcons, isValidIcon } from "../lib/icons";
 import type { IconResult } from "../lib/icons";
+import { resolveIcon } from "../../src/fa-icons";
 
 interface IconPickerProps {
   value: string | undefined;
@@ -12,9 +13,55 @@ interface IconPickerProps {
 export function IconPicker({ value, onChange, iconPosition, onPositionChange }: IconPickerProps) {
   const [query, setQuery] = useState(value ?? "");
   const [isOpen, setIsOpen] = useState(false);
+  const [focusedIndex, setFocusedIndex] = useState(-1);
   const containerRef = useRef<HTMLDivElement>(null);
 
   const results = useMemo(() => searchIcons(query, 40), [query]);
+
+  // Reset focused index when query changes or dropdown closes
+  useEffect(() => {
+    setFocusedIndex(-1);
+  }, [query, isOpen]);
+
+  // Scroll focused item into view
+  useEffect(() => {
+    if (focusedIndex >= 0 && isOpen) {
+      const element = document.getElementById(`icon-option-${focusedIndex}`);
+      if (element) {
+        element.scrollIntoView({ block: "nearest" });
+      }
+    }
+  }, [focusedIndex, isOpen]);
+
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (!isOpen && (e.key === "ArrowDown" || e.key === "ArrowUp" || e.key === "Enter")) {
+      setIsOpen(true);
+      return;
+    }
+
+    if (!isOpen || results.length === 0) return;
+
+    switch (e.key) {
+      case "ArrowDown":
+        e.preventDefault();
+        setFocusedIndex((prev) => (prev + 1) % results.length);
+        break;
+      case "ArrowUp":
+        e.preventDefault();
+        setFocusedIndex((prev) => (prev - 1 + results.length) % results.length);
+        break;
+      case "Enter":
+        e.preventDefault();
+        if (focusedIndex >= 0 && focusedIndex < results.length) {
+          selectIcon(results[focusedIndex]);
+        }
+        break;
+      case "Escape":
+        e.preventDefault();
+        setIsOpen(false);
+        break;
+    }
+  };
 
   // Close on outside click
   useEffect(() => {
@@ -53,14 +100,20 @@ export function IconPicker({ value, onChange, iconPosition, onPositionChange }: 
             className="flex h-9 w-9 shrink-0 items-center justify-center rounded-md border border-border-subtle bg-surface text-base text-zinc-300"
             style={{ fontFamily: '"Font Awesome 7 Free"', fontWeight: 900 }}
           >
-            {results.find((r) => r.name === value)?.codepoint ?? ""}
+            {resolveIcon(value) ?? ""}
           </span>
         )}
 
         <input
           type="text"
+          role="combobox"
+          aria-expanded={isOpen}
+          aria-controls="icon-listbox"
+          aria-activedescendant={focusedIndex >= 0 ? `icon-option-${focusedIndex}` : undefined}
+          aria-autocomplete="list"
           placeholder="Icon (e.g. wrench, gamepad)"
           value={query}
+          onKeyDown={handleKeyDown}
           onChange={(e) => {
             const v = e.target.value;
             setQuery(v);
@@ -132,15 +185,24 @@ export function IconPicker({ value, onChange, iconPosition, onPositionChange }: 
 
       {/* Dropdown */}
       {isOpen && results.length > 0 && (
-        <div className="absolute z-50 mt-1.5 max-h-60 w-full overflow-y-auto rounded-lg border border-border-subtle bg-panel-bg shadow-2xl shadow-black/40 studio-scroll">
+        <div
+          id="icon-listbox"
+          role="listbox"
+          className="absolute z-50 mt-1.5 max-h-60 w-full overflow-y-auto rounded-lg border border-border-subtle bg-panel-bg shadow-2xl shadow-black/40 studio-scroll"
+        >
           <div className="grid grid-cols-5 gap-1 p-2 sm:grid-cols-6 md:grid-cols-8">
-            {results.map((icon) => (
+            {results.map((icon, index) => (
               <button
                 key={icon.name}
+                id={`icon-option-${index}`}
+                role="option"
+                aria-selected={focusedIndex === index}
                 type="button"
                 onClick={() => selectIcon(icon)}
                 className={`group flex flex-col items-center gap-0.5 rounded-md p-1.5 transition ${
-                  icon.name === value
+                  focusedIndex === index
+                    ? "bg-blue-600/20 ring-2 ring-blue-500"
+                    : icon.name === value
                     ? "bg-blue-600/20 ring-1 ring-blue-500/40"
                     : "hover:bg-surface-hover"
                 }`}
